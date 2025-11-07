@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class DashboardController extends Controller
+class ArtikelController extends Controller
 {
     public function __construct()
     {
@@ -38,36 +38,11 @@ class DashboardController extends Controller
             ->orderBy('scheduled_at', 'asc')
             ->first();
         
-        return view('dashboard', compact(
+        return view('artikel', compact(
             'schedules',
             'totalWorkouts',
             'completedWorkouts',
             'pendingWorkouts',
-            'calorieProfile',
-            'todayCalories',
-            'remainingCalories',
-            'nextWorkout'
-        ));
-    }
-    
-    public function artikel()
-    {
-        /** @var User $user */
-        $user = auth()->user();
-        
-        // Calorie data
-        $calorieProfile = $user->calorieProfile;
-        $todayCalories = $user->today_calories;
-        $remainingCalories = $user->remaining_calories;
-        
-        // Next workout
-        $nextWorkout = $user->workoutSchedules()
-            ->pending()
-            ->where('scheduled_at', '>=', now())
-            ->orderBy('scheduled_at', 'asc')
-            ->first();
-        
-        return view('artikel', compact(
             'calorieProfile',
             'todayCalories',
             'remainingCalories',
