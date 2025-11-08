@@ -1,266 +1,204 @@
 @extends('layouts.app')
 
-@section('title', 'Workout History')
-
-@push('styles')
-<style>
-    .history-header {
-        background: white;
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    .history-title {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-
-    .history-subtitle {
-        color: #666;
-        font-size: 1.1rem;
-    }
-
-    .history-timeline {
-        position: relative;
-        padding: 2rem 0;
-    }
-
-    .timeline-line {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(to bottom, #667eea, #764ba2);
-        transform: translateX(-50%);
-    }
-
-    .timeline-item {
-        position: relative;
-        margin-bottom: 3rem;
-        display: flex;
-        align-items: center;
-    }
-
-    .timeline-item:nth-child(odd) {
-        flex-direction: row;
-    }
-
-    .timeline-item:nth-child(even) {
-        flex-direction: row-reverse;
-    }
-
-    .timeline-content {
-        width: calc(50% - 40px);
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .timeline-content:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .timeline-dot {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        z-index: 10;
-        margin: 0 20px;
-        border: 5px solid white;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .history-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .history-activity {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-
-    .history-goal {
-        color: #667eea;
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-    }
-
-    .history-date {
-        color: #999;
-        font-size: 0.85rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .history-completed {
-        color: #51cf66;
-        font-size: 0.9rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-
-    .badge-completed {
-        background: #51cf66;
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 0.5rem;
-    }
-
-    .empty-state {
-        background: white;
-        border-radius: 15px;
-        padding: 4rem 2rem;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .empty-icon {
-        font-size: 5rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
-
-    .empty-title {
-        font-size: 1.8rem;
-        color: #333;
-        margin-bottom: 1rem;
-    }
-
-    .empty-text {
-        color: #666;
-        margin-bottom: 2rem;
-        font-size: 1.1rem;
-    }
-
-    .btn-create {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 1rem 2rem;
-        text-decoration: none;
-        display: inline-block;
-        border-radius: 8px;
-        font-weight: bold;
-    }
-
-    .stats-summary {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        color: white;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 2rem;
-        text-align: center;
-    }
-
-    .stat-item h3 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-item p {
-        font-size: 1rem;
-        opacity: 0.9;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .timeline-line {
-            left: 30px;
-        }
-
-        .timeline-item {
-            flex-direction: row !important;
-            padding-left: 80px;
-        }
-
-        .timeline-content {
-            width: 100%;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 0;
-            margin: 0;
-        }
-    }
-</style>
-@endpush
+@section('title', 'Exercise Guide')
 
 @section('content')
-<div class="history-header">
-    <h1 class="history-title">🏆 Workout History</h1>
-    <p class="history-subtitle">Your journey to fitness excellence</p>
+<div class="min-h-screen flex justify-center py-8">
+    <div class="w-full max-w-md px-6">
+        <!-- Title Section -->
+        <div class="mb-8 text-center">
+            <h1 class="text-2xl font-bold mb-2 text-white tracking-wider">EXERCISE GUIDE</h1>
+            <p class="text-gray-400 text-xs">"Every Move Counts. Start Small, Stay Consistent, And Feel The Difference"</p>
+        </div>
+
+        <!-- Exercise List -->
+        <div class="space-y-6">
+            <!-- Push-Up -->
+            <div class="bg-gray-950 rounded-2xl overflow-hidden shadow-xl">
+                <button onclick="toggleArticle('exercise1')" class="w-full text-left">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=300&fit=crop" 
+                             alt="Push Up" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Chest</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Triceps</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Shoulders</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Core</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Push - Up</h3>
+                        <p class="text-orange-500 text-sm font-medium">Click Here For More →</p>
+                    </div>
+                </button>
+                <div id="exercise1" class="hidden px-4 pb-4 border-t border-zinc-800">
+                    <div class="text-sm text-gray-300 space-y-3 mt-4">
+                        <p>A classic bodyweight exercise that targets multiple upper body muscles.</p>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Instructions:</p>
+                            <ol class="list-decimal list-inside space-y-1 text-gray-400">
+                                <li>Start in a plank position with hands shoulder-width apart</li>
+                                <li>Lower your body until chest nearly touches the floor</li>
+                                <li>Keep your core engaged and body in a straight line</li>
+                                <li>Push back up to starting position</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Tips:</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400">
+                                <li>Keep elbows at 45-degree angle</li>
+                                <li>Breathe in while lowering, out while pushing up</li>
+                                <li>Start with knee push-ups if needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Squat -->
+            <div class="bg-black rounded-2xl overflow-hidden shadow-xl">
+                <button onclick="toggleArticle('exercise2')" class="w-full text-left">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&h=300&fit=crop" 
+                             alt="Squat" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Quadriceps</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Glutes</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Hamstrings</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Core</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Squat</h3>
+                        <p class="text-orange-500 text-sm font-medium">Click Here For More →</p>
+                    </div>
+                </button>
+                <div id="exercise2" class="hidden px-4 pb-4 border-t border-zinc-800">
+                    <div class="text-sm text-gray-300 space-y-3 mt-4">
+                        <p>A fundamental lower body exercise that builds strength and muscle.</p>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Instructions:</p>
+                            <ol class="list-decimal list-inside space-y-1 text-gray-400">
+                                <li>Stand with feet shoulder-width apart</li>
+                                <li>Lower your body by bending knees and hips</li>
+                                <li>Keep chest up and back straight</li>
+                                <li>Go down until thighs are parallel to floor</li>
+                                <li>Push through heels to return to start</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Tips:</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400">
+                                <li>Keep knees in line with toes</li>
+                                <li>Don't let knees cave inward</li>
+                                <li>Maintain neutral spine throughout</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plank -->
+            <div class="bg-black rounded-2xl overflow-hidden shadow-xl">
+                <button onclick="toggleArticle('exercise3')" class="w-full text-left">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=600&h=300&fit=crop" 
+                             alt="Plank" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Shoulders</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Lower back</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Glutes</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Core</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Plank</h3>
+                        <p class="text-orange-500 text-sm font-medium">Click Here For More →</p>
+                    </div>
+                </button>
+                <div id="exercise3" class="hidden px-4 pb-4 border-t border-zinc-800">
+                    <div class="text-sm text-gray-300 space-y-3 mt-4">
+                        <p>An isometric core exercise that builds endurance and stability.</p>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Instructions:</p>
+                            <ol class="list-decimal list-inside space-y-1 text-gray-400">
+                                <li>Start in a forearm plank position</li>
+                                <li>Keep body in straight line from head to heels</li>
+                                <li>Engage core and squeeze glutes</li>
+                                <li>Hold position without sagging hips</li>
+                                <li>Breathe steadily throughout</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Tips:</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400">
+                                <li>Don't let hips sag or pike up</li>
+                                <li>Keep neck neutral, don't look up</li>
+                                <li>Start with shorter holds and build up</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumping Jack -->
+            <div class="bg-black rounded-2xl overflow-hidden shadow-xl">
+                <button onclick="toggleArticle('exercise4')" class="w-full text-left">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=300&fit=crop" 
+                             alt="Jumping Jack" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Calves</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Shoulders</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Glutes</span>
+                            <span class="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">Core</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Jumping Jack</h3>
+                        <p class="text-orange-500 text-sm font-medium">Click Here For More →</p>
+                    </div>
+                </button>
+                <div id="exercise4" class="hidden px-4 pb-4 border-t border-zinc-800">
+                    <div class="text-sm text-gray-300 space-y-3 mt-4">
+                        <p>A dynamic cardio exercise that increases heart rate and warms up the body.</p>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Instructions:</p>
+                            <ol class="list-decimal list-inside space-y-1 text-gray-400">
+                                <li>Start standing with feet together, arms at sides</li>
+                                <li>Jump while spreading legs and raising arms overhead</li>
+                                <li>Jump again to return to starting position</li>
+                                <li>Maintain a steady rhythm</li>
+                                <li>Continue for desired time or reps</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-orange-500 mb-2">Tips:</p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400">
+                                <li>Land softly on balls of feet</li>
+                                <li>Keep core engaged throughout</li>
+                                <li>Modify by stepping instead of jumping if needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-@if($histories->count() > 0)
-    <div class="stats-summary">
-        <div class="stat-item">
-            <h3>{{ $histories->total() }}</h3>
-            <p>Total Completed</p>
-        </div>
-        <div class="stat-item">
-            <h3>🔥</h3>
-            <p>Keep It Up!</p>
-        </div>
-        <div class="stat-item">
-            <h3>💪</h3>
-            <p>You're Amazing!</p>
-        </div>
-    </div>
-
-    <div class="history-timeline">
-        <div class="timeline-line"></div>
-        
-        @foreach($histories as $history)
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="history-icon">🏃‍♂️</div>
-                <div class="history-activity">{{ $history->activity_type }}</div>
-                <div class="history-goal">🎯 Target: {{ $history->target_goal }}</div>
-                <div class="history-date">📅 Scheduled: {{ $history->scheduled_at->format('d M Y, H:i') }}</div>
-                <div class="history-completed">
-                    ✓ Completed: {{ $history->completed_at->format('d M Y, H:i') }}
-                </div>
-                <span class="badge-completed">COMPLETED</span>
-            </div>
-            <div class="timeline-dot">✓</div>
-        </div>
-        @endforeach
-    </div>
-
-    <div style="margin-top: 2rem; text-align: center;">
-        {{ $histories->links() }}
-    </div>
-@else
-    <div class="empty-state">
-        <div class="empty-icon">📊</div>
-        <h2 class="empty-title">No Workout History Yet</h2>
-        <p class="empty-text">Complete your first workout to start tracking your progress!</p>
-        <a href="{{ route('dashboard') }}" class="btn-create">Go to Dashboard</a>
-    </div>
-@endif
+<script>
+    function toggleArticle(articleId) {
+        const article = document.getElementById(articleId);
+        article.classList.toggle('hidden');
+    }
+</script>
 @endsection

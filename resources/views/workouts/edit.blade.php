@@ -2,165 +2,139 @@
 
 @section('title', 'Edit Workout')
 
-@push('styles')
+@section('content')
+<div class="min-h-screen flex items-center justify-center px-6 py-8">
+    <div class="w-full max-w-sm bg-black rounded-3xl px-8 py-12 shadow-2xl">
+        <h1 class="text-white text-2xl font-bold text-center mb-16 tracking-wide">
+            EDIT WORKOUT TARGET
+        </h1>
+        
+        <form method="POST" action="{{ route('workouts.update', $schedule) }}" class="space-y-6">
+            @csrf
+            @method('PUT')
+
+            <!-- Activity Type -->
+            <div>
+                <div class="relative">
+                    <input id="activity_type" 
+                           type="text" 
+                           class="w-full bg-transparent border-2 border-white/30 rounded-full px-6 py-4 pr-14 text-white text-base placeholder-white/40 focus:outline-none focus:border-orange-500 transition-colors" 
+                           name="activity_type" 
+                           value="{{ old('activity_type', $schedule->activity_type) }}" 
+                           placeholder="Activity Type (e.g., Running)" 
+                           required>
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+                            <circle cx="6" cy="3" r="2"></circle>
+                            <path d="M6 5v6"></path>
+                            <path d="M6 13l2 8"></path>
+                            <path d="M10 13l-2 8"></path>
+                            <path d="M10 8l6-2"></path>
+                            <path d="M16 6v8l3 3"></path>
+                        </svg>
+                    </span>
+                </div>
+                @error('activity_type')
+                    <p class="text-red-500 text-xs mt-2 ml-6">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Target Goal -->
+            <div>
+                <div class="relative">
+                    <input id="target_goal" 
+                           type="text" 
+                           class="w-full bg-transparent border-2 border-white/30 rounded-full px-6 py-4 pr-14 text-white text-base placeholder-white/40 focus:outline-none focus:border-orange-500 transition-colors" 
+                           name="target_goal" 
+                           value="{{ old('target_goal', $schedule->target_goal) }}" 
+                           placeholder="Target Goal (e.g., km)" 
+                           required>
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polygon points="12 7 15 12 12 17 9 12"></polygon>
+                        </svg>
+                    </span>
+                </div>
+                @error('target_goal')
+                    <p class="text-red-500 text-xs mt-2 ml-6">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Date & Time -->
+            <div>
+                <div class="relative">
+                    <input id="scheduled_at" 
+                           type="datetime-local" 
+                           class="w-full bg-transparent border-2 border-white/30 rounded-full px-6 py-4 pr-14 text-white text-base focus:outline-none focus:border-orange-500 transition-colors" 
+                           name="scheduled_at" 
+                           value="{{ old('scheduled_at', $schedule->scheduled_at->format('Y-m-d\TH:i')) }}" 
+                           required>
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-500">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </span>
+                </div>
+                @error('scheduled_at')
+                    <p class="text-red-500 text-xs mt-2 ml-6">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Update Button -->
+            <div class="pt-6">
+                <button type="submit" 
+                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-full transition-all duration-200 uppercase tracking-wider text-base shadow-lg">
+                    UPDATE SCHEDULE
+                </button>
+            </div>
+
+            <!-- Cancel Link -->
+            <div class="text-center pt-2">
+                <a href="{{ route('dashboard') }}" 
+                   class="text-white/50 hover:text-white text-sm font-medium transition-colors">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <style>
-    .workout-card {
-        background: #000;
-        border-radius: 15px;
-        padding: 2rem;
-        max-width: 600px;
-        margin: 2rem auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .workout-title {
-        color: white;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .input-wrapper {
-        position: relative;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 1rem 3rem 1rem 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        font-size: 1rem;
-        color: white;
-        transition: all 0.3s;
-    }
-
-    .form-control::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
-
-    .form-control:focus {
-        outline: none;
-        background: rgba(255, 255, 255, 0.15);
-        border-color: #ff6b35;
-    }
-
-    .input-icon {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.5rem;
-    }
-
-    .invalid-feedback {
-        color: #ff6b6b;
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-    }
-
-    .btn-save {
-        width: 100%;
-        padding: 1rem;
-        background: #ff6b35;
-        border: none;
-        color: white;
-        font-size: 1.1rem;
-        font-weight: bold;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-save:hover {
-        background: #ff8555;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
-    }
-
-    .btn-cancel {
-        width: 100%;
-        padding: 1rem;
-        background: transparent;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        font-size: 1rem;
-        border-radius: 10px;
-        cursor: pointer;
-        margin-top: 1rem;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        transition: all 0.3s;
-    }
-
-    .btn-cancel:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
+    /* Datetime picker styling */
     input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-        filter: invert(1);
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+        filter: invert(1) opacity(0);
+    }
+
+    input[type="datetime-local"]::-webkit-datetime-edit {
+        color: white;
+    }
+
+    input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper {
+        color: white;
+    }
+
+    input[type="datetime-local"]::-webkit-datetime-edit-text {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    input[type="datetime-local"]::-webkit-datetime-edit-month-field,
+    input[type="datetime-local"]::-webkit-datetime-edit-day-field,
+    input[type="datetime-local"]::-webkit-datetime-edit-year-field,
+    input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
+    input[type="datetime-local"]::-webkit-datetime-edit-minute-field {
+        color: white;
     }
 </style>
-@endpush
-
-@section('content')
-<div class="workout-card">
-    <h1 class="workout-title">EDIT WORKOUT TARGET</h1>
-    
-    <form method="POST" action="{{ route('workouts.update', $schedule) }}">
-        @csrf
-        @method('PUT')
-
-        <div class="form-group">
-            <div class="input-wrapper">
-                <input id="activity_type" type="text" 
-                       class="form-control @error('activity_type') is-invalid @enderror" 
-                       name="activity_type" value="{{ old('activity_type', $schedule->activity_type) }}" 
-                       placeholder="Activity Type (e.g., Running)" required>
-                <span class="input-icon">🏃</span>
-            </div>
-            @error('activity_type')
-                <span class="invalid-feedback">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <div class="input-wrapper">
-                <input id="target_goal" type="text" 
-                       class="form-control @error('target_goal') is-invalid @enderror" 
-                       name="target_goal" value="{{ old('target_goal', $schedule->target_goal) }}" 
-                       placeholder="Target Goal (e.g., 5 km)" required>
-                <span class="input-icon">🎯</span>
-            </div>
-            @error('target_goal')
-                <span class="invalid-feedback">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            <div class="input-wrapper">
-                <input id="scheduled_at" type="datetime-local" 
-                       class="form-control @error('scheduled_at') is-invalid @enderror" 
-                       name="scheduled_at" 
-                       value="{{ old('scheduled_at', $schedule->scheduled_at->format('Y-m-d\TH:i')) }}" 
-                       required>
-                <span class="input-icon">🕐</span>
-            </div>
-            @error('scheduled_at')
-                <span class="invalid-feedback">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <button type="submit" class="btn-save">Update Schedule</button>
-        <a href="{{ route('dashboard') }}" class="btn-cancel">Cancel</a>
-    </form>
-</div>
 @endsection

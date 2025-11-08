@@ -11,8 +11,12 @@ use App\Http\Controllers\CalorieCalculatorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('welcome');
+})->name('home');
+
+Route::get('/meal-plan', function () {
+    return view('meal-plan');
+})->name('meal-plan');
 
 // Authentication Routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
