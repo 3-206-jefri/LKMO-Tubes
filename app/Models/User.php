@@ -25,15 +25,16 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
+        'name',
         'username',
         'nickname',
         'email',
         'password',
-        'profile_photo',
         'date_of_birth',
         'height',
         'weight',
         'gender',
+        'profile_photo',
     ];
 
     protected $hidden = [
@@ -62,12 +63,22 @@ class User extends Authenticatable
         return $this->hasMany(WorkoutSchedule::class);
     }
 
+    /**
+     * Get the profile photo URL attribute.
+     * DIPERBAIKI: Gunakan asset() langsung karena file ada di public/storage
+     */
     public function getProfilePhotoUrlAttribute()
     {
-        if ($this->profile_photo && Storage::disk('public')->exists($this->profile_photo)) {
-            return asset('storage/' . $this->profile_photo);
+        if ($this->profile_photo) {
+            // Cek apakah file benar-benar ada
+            $filePath = public_path($this->profile_photo);
+            if (file_exists($filePath)) {
+                return asset($this->profile_photo);
+            }
         }
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->username) . '&size=200&background=667eea&color=fff&bold=true';
+        
+        // Default avatar jika tidak ada foto
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->username ?? 'User') . '&size=200&background=f97316&color=fff&bold=true';
     }
 
     public function getAgeAttribute()
@@ -88,30 +99,30 @@ class User extends Authenticatable
     }
 
     public function calorieProfile()
-{
-    return $this->hasOne(CalorieProfile::class)->latestOfMany();
-}
-
-public function foodLogs()
-{
-    return $this->hasMany(FoodLog::class);
-}
-
-public function todayFoodLogs()
-{
-    return $this->hasMany(FoodLog::class)->whereDate('date', today());
-}
-
-public function getTodayCaloriesAttribute()
-{
-    return $this->todayFoodLogs()->sum('calories');
-}
-
-public function getRemainingCaloriesAttribute()
-{
-    if (!$this->calorieProfile) {
-        return null;
+    {
+        return $this->hasOne(CalorieProfile::class)->latestOfMany();
     }
-    return $this->calorieProfile->tdee - $this->today_calories;
-}
+
+    public function foodLogs()
+    {
+        return $this->hasMany(FoodLog::class);
+    }
+
+    public function todayFoodLogs()
+    {
+        return $this->hasMany(FoodLog::class)->whereDate('date', today());
+    }
+
+    public function getTodayCaloriesAttribute()
+    {
+        return $this->todayFoodLogs()->sum('calories');
+    }
+
+    public function getRemainingCaloriesAttribute()
+    {
+        if (!$this->calorieProfile) {
+            return null;
+        }
+        return $this->calorieProfile->tdee - $this->today_calories;
+    }
 }

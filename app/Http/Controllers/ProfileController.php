@@ -32,21 +32,44 @@ class ProfileController extends Controller
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($request->hasFile('profile_photo')) {
-            // Hapus foto lama jika ada
-            if ($user->profile_photo) {
-                Storage::disk('public')->delete($user->profile_photo);
+        try {
+            if ($request->hasFile('profile_photo')) {
+                // Hapus foto lama jika ada
+                if ($user->profile_photo) {
+                    $oldPath = public_path($user->profile_photo);
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+
+                // Upload foto baru
+                $file = $request->file('profile_photo');
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('storage/profile-photos'), $filename);
+                
+                // PENTING: Path harus 'storage/profile-photos/...'
+                $user->profile_photo = 'storage/profile-photos/' . $filename;
             }
 
-            // Upload foto baru
-            $path = $request->file('profile_photo')->store('profile-photos', 'public');
-            $validated['profile_photo'] = $path;
+            // Update data lainnya
+            $user->username = $validated['username'];
+            $user->nickname = $validated['nickname'] ?? null;
+            $user->email = $validated['email'];
+            $user->date_of_birth = $validated['date_of_birth'] ?? null;
+            $user->height = $validated['height'] ?? null;
+            $user->weight = $validated['weight'] ?? null;
+            $user->gender = $validated['gender'] ?? null;
+            
+            $user->save();
+
+            return redirect()->route('profile.edit')
+                ->with('success', 'Profile updated successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to update profile: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $user->update($validated);
-
-        return redirect()->route('profile.edit')
-            ->with('success', 'Profile updated successfully!');
     }
 
     public function show()
